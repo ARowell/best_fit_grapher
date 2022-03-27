@@ -18,20 +18,26 @@
         canvas.height = window.innerHeight;
         canvasW = canvas.width;
         canvasH = canvas.height;
-        xScale = canvasW / 22
-        yScale = canvasH / 22
+        xMin = -10
+        xMax = 10
+        yMin = -10
+        yMax = 10
+        xScale = canvasW / (xMax - xMin)
+        yScale = canvasH / (yMax - yMin)
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            drawPoint(scaleX(1), scaleY(1));
-            drawPoint(scaleX(1), scaleY(4));
             drawAxes();
+            drawPoint(1, 1);
+            drawPoint(1, 4);
+            drawLinear(1, 1);
+            drawQuadratic(1, 0, -1);
         }
 
         function drawPoint(x, y) {
             ctx.beginPath();
-            ctx.arc(x, y, 5, 0, Math.PI*2);
+            ctx.arc(scaleX(x), scaleY(y), 5, 0, Math.PI*2);
             ctx.fillStyle = "Blue";
             ctx.fill();
             ctx.closePath();
@@ -53,21 +59,48 @@
             ctx.closePath();
         }
 
+        function drawLinear(m, b) {
+            // y = mx + b
+            x = xMin;
+            y = m * x + b;
+            ctx.moveTo(scaleX(x), scaleY(y))
+            for (x = xMin; x <= xMax; x += 1/xScale) {
+                y = m * x + b;
+                ctx.lineTo(scaleX(x), scaleY(y));
+                ctx.stroke();
+            }
+        }
+
+        function drawQuadratic(a, b, c) {
+            // y = ax^2 + bx + c
+            x = xMin;
+            y = a * x * x + b * x + c;
+            ctx.moveTo(scaleX(x), scaleY(y))
+            for (x = xMin; x <= xMax; x += 1/xScale) {
+                y = a * x * x + b * x + c;
+                ctx.lineTo(scaleX(x), scaleY(y));
+                ctx.stroke();
+            }
+        }
+
         function scaleX (x) {
-            return (xScale * 22 / 2) + xScale * x
+            return (canvasW / 2) + xScale * x
         }
 
         function scaleY (y) {
-            return (yScale * 22 / 2) + yScale * y
+            return (canvasH / 2) + yScale * y * -1
         }
 
         function drawAxes () {
-            for (i = 1; i <= 21; i++) {
-                drawVerticalLine(xScale * i, "#505050", 1)
-                drawHorizontalLine(yScale * i, "#505050", 1)
+            for (i = xMin; i <= xMax; i++) {
+                drawVerticalLine(scaleX(i), "#505050", 1) 
             }
-            drawVerticalLine(xScale * 11, color = "Black", thickness = 4)
-            drawHorizontalLine(yScale * 11, color = "Black", thickness = 4)
+
+            for (i = yMin; i <= yMax; i++) {
+                drawHorizontalLine(scaleY(i), "#505050", 1)
+            }
+            drawVerticalLine(scaleX(0), color = "Black", thickness = 4)
+            drawHorizontalLine(scaleY(0), color = "Black", thickness = 4)
         }
 
         draw()
