@@ -3,106 +3,21 @@
 <head>
     <meta charset="utf-8" />
     <title>Gamedev Canvas Workshop</title>
-    <style>
-        * {padding: 0; margin: 0;}
-        canvas {background: #eee; display: block; margin: 0 auto;}
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script language="JavaScript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.2.1/math.js"></script>
 </head>
 <body>
+    <div class="header-flex">
+        <div class="header-item">
+            Enter point: (
+                <input class="number-input" id="addx"></input>
+                , 
+                <input class="number-input" id="addy"></input>
+                ) 
+                <button class="header-button" onclick="addPoint()">Submit</button>
+        </div>
+
+    </div>
     <canvas id="myCanvas" width="480" height="320"></canvas>
-
-    <script>
-        var canvas = document.getElementById("myCanvas");
-        var ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        canvasW = canvas.width;
-        canvasH = canvas.height;
-        xMin = -10
-        xMax = 10
-        yMin = -10
-        yMax = 10
-        xScale = canvasW / (xMax - xMin)
-        yScale = canvasH / (yMax - yMin)
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            drawAxes();
-            drawPoint(1, 1);
-            drawPoint(1, 4);
-            drawLinear(1, 1);
-            drawQuadratic(1, 0, -1);
-        }
-
-        function drawPoint(x, y) {
-            ctx.beginPath();
-            ctx.arc(scaleX(x), scaleY(y), 5, 0, Math.PI*2);
-            ctx.fillStyle = "Blue";
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function drawVerticalLine(x, color = "Black", thickness = 2) {
-            ctx.beginPath(); 
-            ctx.rect(x - (thickness / 2), 0, thickness, canvasH)
-            ctx.fillStyle = color;
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function drawHorizontalLine(y, color = "Black", thickness = 2) {
-            ctx.beginPath(); 
-            ctx.rect(0, y - (thickness / 2), canvasW, thickness)
-            ctx.fillStyle = color;
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function drawLinear(m, b) {
-            // y = mx + b
-            x = xMin;
-            y = m * x + b;
-            ctx.moveTo(scaleX(x), scaleY(y))
-            for (x = xMin; x <= xMax; x += 1/xScale) {
-                y = m * x + b;
-                ctx.lineTo(scaleX(x), scaleY(y));
-                ctx.stroke();
-            }
-        }
-
-        function drawQuadratic(a, b, c) {
-            // y = ax^2 + bx + c
-            x = xMin;
-            y = a * x * x + b * x + c;
-            ctx.moveTo(scaleX(x), scaleY(y))
-            for (x = xMin; x <= xMax; x += 1/xScale) {
-                y = a * x * x + b * x + c;
-                ctx.lineTo(scaleX(x), scaleY(y));
-                ctx.stroke();
-            }
-        }
-
-        function scaleX (x) {
-            return (canvasW / 2) + xScale * x
-        }
-
-        function scaleY (y) {
-            return (canvasH / 2) + yScale * y * -1
-        }
-
-        function drawAxes () {
-            for (i = xMin; i <= xMax; i++) {
-                drawVerticalLine(scaleX(i), "#505050", 1) 
-            }
-
-            for (i = yMin; i <= yMax; i++) {
-                drawHorizontalLine(scaleY(i), "#505050", 1)
-            }
-            drawVerticalLine(scaleX(0), color = "Black", thickness = 4)
-            drawHorizontalLine(scaleY(0), color = "Black", thickness = 4)
-        }
-
-        draw()
-    </script>
+    <script language="JavaScript" src="index.js"></script>
 </body>
