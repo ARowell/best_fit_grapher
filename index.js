@@ -4,29 +4,33 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight - 50;
 let canvasW = canvas.width;
 let canvasH = canvas.height;
-let xMin = -10
-let xMax = 10
-let yMin = -10
-let yMax = 10
-let xScale = canvasW / (xMax - xMin)
-let yScale = canvasH / (yMax - yMin)
-let points = {x: [], y: []}
+let xMin = -10;
+let xMax = 10;
+let yMin = -10;
+let yMax = 10;
+let xScale = canvasW / (xMax - xMin);
+let yScale = canvasH / (yMax - yMin);
+let points = {x: [0, 1, 3, -1], y: [0, 1, 3, -1]};
+let functionType = "linear";
+let lineOn = false;
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     drawAxes();
-    drawPoint(1, 1);
-    drawPoint(1, 4);
-    drawLinear(1, 1);
-    drawQuadratic(1, 0, -1);
     drawAllPoints();
     console.log(math.sqrt(9));
+
+    if (lineOn) {
+        if (functionType === "linear") {
+            graphLinearLOBF();
+        }
+    }
 }
 
 function drawPoint(x, y) {
     ctx.beginPath();
-    ctx.arc(scaleX(x), scaleY(y), 5, 0, Math.PI*2);
+    ctx.arc(scaleX(x), scaleY(y), 7, 0, Math.PI*2);
     ctx.fillStyle = "Blue";
     ctx.fill();
     ctx.closePath();
@@ -103,6 +107,23 @@ function addPoint() {
     points.y.push(parseInt(document.getElementById("addy").value));
     document.getElementById("addx").value = "";
     document.getElementById("addy").value = "";
+    draw();
+}
+
+function graphLinearLOBF() {
+    let a = math.ones([points.x.length, 2]);
+    let b = math.ones([points.y.length, 1]);
+    for (i = 0; i < points.x.length; i++) {
+        a = math.subset(a, math.index(i, 0), points.x[i]);
+        b = math.subset(b, math.index(i, 0), points.y[i]);
+    }
+
+    beta = math.multiply( math.inv(math.multiply(math.transpose(a), a)), math.multiply(math.transpose(a), b));
+    drawLinear(math.subset(beta, math.index(0, 0)), math.subset(beta, math.index(1, 0)));
+}
+
+function toggleLOBF() {
+    lineOn = !lineOn;
     draw();
 }
 
