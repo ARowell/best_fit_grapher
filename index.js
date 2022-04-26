@@ -10,7 +10,7 @@ let yMin = -10;
 let yMax = 10;
 let xScale = canvasW / (xMax - xMin);
 let yScale = canvasH / (yMax - yMin);
-let points = {x: [0, 1, 3, -1], y: [0, 1, 3, -1]};
+let points = {x: [], y: []};
 let functionType = "linear";
 let lineOn = false;
 
