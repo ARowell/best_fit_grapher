@@ -19,7 +19,6 @@ function draw() {
 
     drawAxes();
     drawAllPoints();
-    console.log(math.sqrt(9));
 
     if (lineOn) {
         if (functionType === "linear") {
@@ -103,8 +102,13 @@ function drawAxes () {
 }
 
 function addPoint() {
-    points.x.push(parseInt(document.getElementById("addx").value));
-    points.y.push(parseInt(document.getElementById("addy").value));
+    let x = parseFloat(document.getElementById("addx").value);
+    let y = parseFloat(document.getElementById("addy").value)
+    if (typeof(x) === "number" && typeof(y) === "number") {
+        points.x.push(x);
+        points.y.push(y);
+    }
+    
     document.getElementById("addx").value = "";
     document.getElementById("addy").value = "";
     draw();
