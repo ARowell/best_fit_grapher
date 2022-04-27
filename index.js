@@ -103,8 +103,8 @@ function drawAxes () {
 
 function addPoint() {
     let x = parseFloat(document.getElementById("addx").value);
-    let y = parseFloat(document.getElementById("addy").value)
-    if (typeof(x) === "number" && typeof(y) === "number") {
+    let y = parseFloat(document.getElementById("addy").value);
+    if (!isNaN(x) && !isNaN(y)) {
         points.x.push(x);
         points.y.push(y);
     }
